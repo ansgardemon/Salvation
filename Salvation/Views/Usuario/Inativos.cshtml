@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Salvation.Models.Usuario>
+@* // Define que a View recebe como modelo uma lista de objetos Usuario (usuários inativos). *@
+
+@{
+    ViewData["Title"] = "Usuários Inativos";
+    // Define o título exibido na aba e no topo da página.
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Tipo</th>
+            <th>Data de Nascimento</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            // Percorre a lista de usuários inativos recebida do controller.
+            <tr>
+                <td>@usuario.Nome</td>
+                <td>@usuario.Email</td>
+                <td>@usuario.TipoUsuario?.DescricaoTipoUsuario</td>
+                <td>@usuario.DataNascimento.ToShortDateString()</td>
+                <td>
+                    <!-- Botão para reativar usuário -->
+                    <a asp-action="AtivarUsuario" asp-route-id="@usuario.IdUsuario"
+                       class="btn btn-sm btn-success">Ativar</a>
+                    <!--
+                       Tag Helper asp-action="Ativar": chama a Action "Ativar" no UsuarioController
+                       asp-route-id: envia o Id do usuário na rota
+                    -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Botão para voltar à listagem principal -->
+<a asp-action="Index" class="btn btn-secondary">Voltar</a>

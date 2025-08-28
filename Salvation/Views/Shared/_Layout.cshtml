@@ -1,0 +1,99 @@
+﻿@using System.Security.Claims
+<!-- Importa ClaimTypes para ler Role/Name do usuário logado -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Salvation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Bootstrap e CSS do site -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+</head>
+
+<body class="m-0 bg-dark text-light">
+    <div class="d-flex" id="layoutWrapper">
+        <!-- Sidebar lateral fixa -->
+        <nav id="sidebar" class="sidebar bg-dark text-light p-3">
+            @{
+                // Lê a role do usuário autenticado (via Claims)
+                var role = User.FindFirst(ClaimTypes.Role)?.Value ?? "Outros";
+                // Escolhe avatar conforme a role
+                var avatar = role switch
+                {
+                    "Administrador" => "avatar-admin.png",
+                    "Gerente" => "avatar-gerente.png",
+                    _ => "avatar-outros.png"
+                };
+            }
+
+            <!-- Cabeçalho do usuário -->
+            <div class="text-center mb-4">
+                <img src="~/img/@avatar" width="64" height="64"
+                     class="rounded-circle border border-light shadow-sm" alt="Avatar" />
+                <div class="mt-2">
+                    <strong>@User.Identity?.Name</strong><br />
+                    <small class="text-muted">@role</small>
+                </div>
+            </div>
+
+            <!-- Navegação -->
+            <ul class="nav flex-column gap-2">
+                <li><a class="nav-link text-light" asp-controller="Home" asp-action="Index">🏠 Início</a></li>
+                <li><a class="nav-link text-light" asp-controller="Filme" asp-action="Index">🎬 Filmes</a></li>
+                <li><a class="nav-link text-light" asp-controller="Usuario" asp-action="Index">👥 Usuários</a></li>
+
+                @* Itens visíveis só para Admin/Gerente *@
+               @*  @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                {
+                    <li><a class="nav-link text-light" asp-controller="Genero" asp-action="Index">📂 Gêneros</a></li>
+                    <li><a class="nav-link text-light" asp-controller="Classificacao" asp-action="Index">🧷 Classificações</a></li>
+                    <li><a class="nav-link text-light" asp-controller="TipoUsuario" asp-action="Index">⚙️ Tipos de Usuário</a></li>
+                } *@
+
+                @* Item só para Admin *@
+                @if (User.IsInRole("Administrador"))
+                {
+                    <li><a class="nav-link text-light" asp-controller="Usuario" asp-action="Inativos">🧟‍♂️ Inativos</a></li>
+                }
+
+                <li class="mt-4">
+                    <a class="nav-link text-danger" asp-controller="Usuario" asp-action="Logout">🚪 Sair</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Coluna de conteúdo principal -->
+        <div class="flex-grow-1 d-flex flex-column">
+            <!-- Topbar mobile: botão para abrir/fechar sidebar -->
+            <div class="d-md-none bg-dark border-bottom p-2">
+                <button class="btn btn-outline-light btn-sm" onclick="toggleSidebar()">☰ Menu</button>
+            </div>
+
+            <main class="flex-grow-1 p-4 main-content">
+                @RenderBody()  <!-- Aqui entram as views renderizadas -->
+            </main>
+
+            <footer class="text-center text-muted small py-2 bg-black">
+                &copy; 2025 - Salvation 🦇
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Abre/fecha a sidebar em telas menores
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("show");
+        }
+    </script>
+
+    <!-- Bootstrap JS -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("Scripts", required: false) <!-- Seções de scripts por view -->
+
+</body>
+</html>
+

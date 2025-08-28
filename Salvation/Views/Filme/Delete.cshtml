@@ -1,0 +1,55 @@
+﻿@model Salvation.Models.Filme
+@* // Define que a View recebe um objeto Filme com os dados do filme selecionado. *@
+
+@{
+    ViewData["Title"] = "Excluir Filme";
+    // Define o título exibido na aba e no layout.
+}
+
+<h2>Deseja realmente excluir este filme?</h2>
+@* // Mensagem de confirmação exibida ao usuário. *@
+
+<dl class="row">
+    //
+    <dl>
+     @*    é uma lista de definição (descrição de dados).
+        // Exibe informações do filme antes da exclusão. *@
+
+        <dt class="col-sm-2">Título</dt>
+        <dd class="col-sm-10">@Model.Titulo</dd>
+       @*  // Mostra o título do filme. *@
+
+        <dt class="col-sm-2">Produtora</dt>
+        <dd class="col-sm-10">@Model.Produtora</dd>
+     @*    // Mostra a produtora. *@
+
+        <dt class="col-sm-2">Gênero</dt>
+        <dd class="col-sm-10">@Model.Genero?.DescricaoGenero</dd>
+      @*   // Mostra o gênero do filme (se existir). *@
+
+        <dt class="col-sm-2">Classificação</dt>
+        <dd class="col-sm-10">@Model.Classificacao?.DescricaoClassificacao</dd>
+     @*    // Mostra a classificação etária (se existir). *@
+
+        <dt class="col-sm-2">Imagem</dt>
+        <dd class="col-sm-10">
+            @if (!string.IsNullOrEmpty(Model.UrlImagem))
+            {
+                <img src="@Model.UrlImagem" width="80" />
+            }
+            // Mostra a imagem do filme, se houver.
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+       @*  // Formulário que envia a requisição para a Action DeleteConfirmed. *@
+
+        <input type="hidden" asp-for="IdFilme" />
+     @*    // Campo oculto com o Id do filme que será excluído. *@
+
+        <button type="submit" class="btn btn-danger">Excluir</button>
+      @*   // Botão que confirma e envia a exclusão. *@
+
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+        @* // Link para voltar à lista sem excluir o filme. *@
+    </form>

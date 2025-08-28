@@ -1,0 +1,44 @@
+﻿//_UsuarioLogado.cshtml
+@using System.Security.Claims
+@* // Importa ClaimTypes para ler as Claims do usuário autenticado. *@
+
+@{
+    var nome = User.Identity?.Name;
+    // Nome do usuário logado (vem da Claim Name, definida no login).
+
+    var role = User.FindFirst(ClaimTypes.Role)?.Value ?? "Outros";
+    // Busca a Claim do tipo Role. Se não houver, usa "Outros" como padrão.
+
+    // Escolhe ícone do avatar conforme a role
+    var icone = role switch
+    {
+        "Administrador" => "avatar-admin.png",
+        "Gerente" => "avatar-gerente.png",
+        _ => "avatar-outros.png"
+    };
+
+    // Define a cor do badge (Bootstrap) conforme a role
+    var badge = role switch
+    {
+        "Administrador" => "danger",   // vermelho
+        "Gerente" => "warning",        // amarelo
+        _ => "secondary"               // cinza
+    };
+}
+
+@if (User.Identity?.IsAuthenticated ?? false)
+{
+    <!-- Renderiza apenas se o usuário estiver logado -->
+    <div class="usuario-logado d-flex align-items-center gap-3 px-2">
+        <!-- Avatar -->
+        <img src="~/img/@icone" width="42" height="42"
+             class="rounded-circle border shadow-sm" alt="Avatar" />
+
+        <!-- Nome e badge -->
+        <div>
+            <div class="text-white small">Olá, <strong>@nome</strong></div>
+            <span class="badge bg-@badge">@role</span>
+            <!-- Badge muda de cor conforme role do usuário -->
+        </div>
+    </div>
+}

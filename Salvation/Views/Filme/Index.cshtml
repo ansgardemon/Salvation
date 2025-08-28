@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Salvation.Models.Filme>
+@* Define que esta View receberá um modelo que é uma coleção (IEnumerable)
+de objetos do tipo Filme, ou seja, uma lista de filmes para exibir. *@
+
+@{
+    ViewData["Title"] = "Lista de Filmes";
+    // Define o título da página que será usado, por exemplo, no layout.
+}
+
+<h2>@ViewData["Title"]</h2>
+@* Renderiza o título dinâmico da página (Lista de Filmes). *@
+
+<p>
+    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+    {
+        // Exibe o botão "Novo Filme" somente para usuários que têm o papel
+        // "Administrador" ou "Gerente".
+        <a asp-action="Create" class="btn btn-success">Novo Filme</a>
+    }
+</p>
+
+<!-- Formulário para filtros de pesquisa -->
+<form asp-action="Index" method="get" class="row mb-3">
+    <div class="col-md-4">
+        <select name="generoId" class="form-select">
+            <option value="">Todos os Gêneros</option>
+            @foreach (var genero in ViewBag.Generos as SelectList)
+            {
+                // Monta dinamicamente o dropdown (combo) de gêneros
+                <option value="@genero.Value"
+                        selected="@(genero.Value == (ViewBag.FiltroGeneroId?.ToString() ?? "") ? "selected" : null)">
+                    @genero.Text
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <!-- Campo para buscar filmes pelo título -->
+        <input type="text" name="search" value="@ViewBag.TermoBusca"
+               class="form-control" placeholder="Buscar por título..." />
+    </div>
+    <div class="col-md-2">
+        <!-- Botão que envia o formulário de filtro -->
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+    <div class="col-md-2">
+        <!-- Botão que reseta os filtros e recarrega a lista completa -->
+        <a asp-action="Index" class="btn btn-secondary w-100">Limpar</a>
+    </div>
+</form>
+
+<!-- Tabela para exibição dos filmes -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Produtora</th>
+            <th>Classificação</th>
+            <th>Gênero</th>
+            <th>Imagem</th>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+            {
+                <th>Ações</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            // Loop para cada filme da lista (Model).
+            <tr>
+                <td>@item.Titulo</td>
+                <td>@item.Produtora</td>
+                <td>@item.Classificacao?.DescricaoClassificacao</td>
+                <td>@item.Genero?.DescricaoGenero</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.UrlImagem))
+                    {
+                        // Exibe a imagem se existir URL definida.
+                        <img src="@item.UrlImagem" alt="Imagem" width="80" />
+                    }
+                </td>
+                <td>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                    {
+                        // Botão Editar aparece para Admin e Gerente.
+                        <a asp-action="Edit" asp-route-id="@item.IdFilme" class="btn btn-primary btn-sm">Editar</a>
+                    }
+
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        // Botão Excluir aparece somente para Admin.
+                        <a asp-action="Delete" asp-route-id="@item.IdFilme" class="btn btn-danger btn-sm">Excluir</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

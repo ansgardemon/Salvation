@@ -1,0 +1,69 @@
+﻿@model Salvation.ViewModels.FilmeViewModel
+@* // Define que esta View vai receber um objeto do tipo FilmeViewModel.
+// Esse ViewModel contém os dados necessários para criar um filme
+// (título, produtora, imagem, classificação, gênero, etc). *@
+
+@{
+    ViewData["Title"] = "Cadastrar Filme";
+    // Define o título que será exibido no layout e no <h2>.
+}
+
+<h2>@ViewData["Title"]</h2>
+@* // Exibe dinamicamente o título da página. *@
+
+<form asp-action="Create" enctype="multipart/form-data">
+@*     // O formulário envia os dados para a Action "Create" do Controller.
+    // "enctype=multipart/form-data" é obrigatório quando há upload de arquivos. *@
+
+    <div class="mb-3">
+        <label asp-for="TituloFilme" class="form-label"></label>
+        <input asp-for="TituloFilme" class="form-control" />
+        <span asp-validation-for="TituloFilme" class="text-danger"></span>
+@*         // "asp-for" conecta o input diretamente à propriedade do ViewModel.
+        // O "span asp-validation-for" exibe mensagens de erro da validação. *@
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProdutoraFilme" class="form-label"></label>
+        <input asp-for="ProdutoraFilme" class="form-control" />
+        <span asp-validation-for="ProdutoraFilme" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImagemUpload" class="form-label">Imagem</label>
+        <input asp-for="ImagemUpload" type="file" class="form-control" />
+@*         // Campo de upload para o usuário selecionar a imagem do filme. *@
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ClassificacaoId" class="form-label"></label>
+        <select asp-for="ClassificacaoId" asp-items="Model.Classificacoes" class="form-select">
+            <option value="">Selecione</option>
+        </select>
+        <span asp-validation-for="ClassificacaoId" class="text-danger"></span>
+@*         // Dropdown (combo) de classificações. O "asp-items" carrega a lista
+        // vinda do ViewModel (IEnumerable<SelectListItem>). *@
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GeneroId" class="form-label"></label>
+        <select asp-for="GeneroId" asp-items="Model.Generos" class="form-select">
+            <option value="">Selecione</option>
+        </select>
+        <span asp-validation-for="GeneroId" class="text-danger"></span>
+@*         // Dropdown de gêneros, mesmo funcionamento do anterior. *@
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+@*     // Botão que envia o formulário. *@
+
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+@*     // Link que redireciona para a action "Index" (lista de filmes). *@
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+@*     // Inclui scripts de validação do ASP.NET (jQuery Validation + Unobtrusive).
+    // Isso permite que os erros definidos com DataAnnotations no Model sejam
+    // exibidos automaticamente no front-end. *@
+}

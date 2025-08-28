@@ -1,0 +1,14 @@
+﻿@model Salvation.Models.Usuario
+
+@{
+    ViewData["Title"] = "Reativar Usuário";
+}
+
+<h2>Confirmar reativação</h2>
+
+<p>Deseja reativar o usuário <strong>@Model.Nome</strong>?</p>
+
+<form asp-action="AtivarUsuarioConfirm" asp-route-id="@Model.IdUsuario" method="post">
+    <button type="submit" class="btn btn-success">Confirmar</button>
+    <a asp-action="Inativos" class="btn btn-secondary">Cancelar</a>
+</form>

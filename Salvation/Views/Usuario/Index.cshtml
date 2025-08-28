@@ -1,0 +1,92 @@
+﻿@model IEnumerable<Salvation.Models.Usuario>
+@* // Define que o Model da View é uma lista de objetos Usuario.
+// Ou seja, a View vai receber uma coleção de usuários do banco. *@
+
+@{
+    ViewData["Title"] = "Lista de Usuários";
+    // Define o título da página que será usado no layout e exibido em <h2>.
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+    {
+        // Mostra o botão "Novo Usuário" apenas para Administradores e Gerentes.
+        <a asp-action="Create" class="btn btn-success">Novo Usuário</a>
+    }
+</p>
+
+<!-- Formulário de filtros -->
+<form asp-action="Index" method="get" class="row mb-3">
+    <div class="col-md-4">
+        <!-- Dropdown de Tipos de Usuário -->
+        <select name="tipoUsuarioId" class="form-select">
+            <option value="">Todos os Tipos</option>
+            @foreach (var tipo in ViewBag.TiposUsuario as SelectList)
+            {
+                // Marca como "selected" se o tipo for igual ao filtro aplicado
+                <option value="@tipo.Value"
+                        selected="@(tipo.Value == (ViewBag.FiltroTipoId?.ToString() ?? "") ? "selected" : null)">
+                    @tipo.Text
+                </option>
+            }
+        </select>
+    </div>
+    <div class="col-md-4">
+        <!-- Campo de busca por nome -->
+        <input type="text" name="search" value="@ViewBag.TermoBusca"
+               class="form-control" placeholder="Buscar por nome..." />
+    </div>
+    <div class="col-md-2">
+        <!-- Botão para aplicar filtros -->
+        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+    </div>
+    <div class="col-md-2">
+        <!-- Botão para limpar filtros e voltar ao Index -->
+        <a asp-action="Index" class="btn btn-secondary w-100">Limpar</a>
+    </div>
+</form>
+
+<!-- Tabela de listagem -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Data de Nascimento</th>
+            <th>Tipo de Usuário</th>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+            {
+                <th>Ações</th>
+                // A coluna "Ações" só aparece para Admin/Gerente
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var usuario in Model)
+        {
+            // Percorre a lista de usuários e renderiza linha por linha.
+            <tr>
+                <td>@usuario.Nome</td>
+                <td>@usuario.Email</td>
+                <td>@usuario.DataNascimento.ToShortDateString()</td>
+                <td>@usuario.TipoUsuario?.DescricaoTipoUsuario</td>
+                <td>
+                    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                    {
+                        // Botão de editar disponível para Admin/Gerente
+                        <a asp-action="Edit" asp-route-id="@usuario.IdUsuario"
+                           class="btn btn-sm btn-primary">Editar</a>
+                    }
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        // Botão de excluir disponível apenas para Admin
+                        <a asp-action="Delete" asp-route-id="@usuario.IdUsuario"
+                           class="btn btn-sm btn-danger">Excluir</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

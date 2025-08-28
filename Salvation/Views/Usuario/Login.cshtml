@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    // Define o título da página (pode aparecer no <title> do layout).
+}
+
+<h2 class="mb-4">Login</h2>
+
+<form asp-action="Login" method="post">
+    <!-- Tag Helper de formulário:
+         - asp-action="Login" liga este form à Action Login (POST) do UsuarioController atual.
+         - method="post" aciona a validação antiforgery automática (ver nota abaixo). -->
+
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <!-- rótulo do campo; "for" casa com o name/id do input -->
+        <input type="email" name="email" class="form-control" required />
+        <!-- name="email" precisa bater com o parâmetro da Action: Login(string email, string senha)
+             type="email" ativa validação HTML5; required obriga preenchimento no client-side -->
+    </div>
+
+    <div class="mb-3">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" name="senha" maxlength="6" class="form-control" required />
+        <!-- name="senha" corresponde ao parâmetro da Action. type="password" oculta a digitação -->
+    </div>
+
+    <button type="submit" class="btn btn-primary">Entrar</button>
+    <!-- envia o form para Usuario/Login (POST) -->
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger mt-3">
+        @Html.ValidationSummary()
+        <!-- exibe os erros de ModelState retornados pelo Controller (ex.: credenciais inválidas) -->
+    </div>
+}

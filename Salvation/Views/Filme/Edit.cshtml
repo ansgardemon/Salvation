@@ -1,0 +1,60 @@
+﻿@model Salvation.ViewModels.FilmeViewModel
+// A View recebe um UsuarioViewModel, que contém os dados necessários para criar um usuário.
+
+@{
+    ViewData["Title"] = "Editar Filme";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="IdFilme" />
+    <!-- Formulário que será enviado para a Action Create (POST) no UsuarioController. -->
+
+    <div class="mb-3">
+        <label asp-for="TituloFilme" class="form-label"></label>
+        <input asp-for="TituloFilme" class="form-control" />
+        <span asp-validation-for="TituloFilme" class="text-danger"></span>
+        @*         // "asp-for" conecta o input diretamente à propriedade do ViewModel.
+        // O "span asp-validation-for" exibe mensagens de erro da validação. *@
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ProdutoraFilme" class="form-label"></label>
+        <input asp-for="ProdutoraFilme" class="form-control" />
+        <span asp-validation-for="ProdutoraFilme" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ImagemUpload" class="form-label">Imagem</label>
+        <input asp-for="ImagemUpload" type="file" class="form-control" />
+        @*         // Campo de upload para o usuário selecionar a imagem do filme. *@
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ClassificacaoId" class="form-label"></label>
+        <select asp-for="ClassificacaoId" asp-items="Model.Classificacoes" class="form-select">
+            <option value="">Selecione</option>
+        </select>
+        <span asp-validation-for="ClassificacaoId" class="text-danger"></span>
+        @*         // Dropdown (combo) de classificações. O "asp-items" carrega a lista
+        // vinda do ViewModel (IEnumerable<SelectListItem>). *@
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="GeneroId" class="form-label"></label>
+        <select asp-for="GeneroId" asp-items="Model.Generos" class="form-select">
+            <option value="">Selecione</option>
+        </select>
+        <span asp-validation-for="GeneroId" class="text-danger"></span>
+        @*         // Dropdown de gêneros, mesmo funcionamento do anterior. *@
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- Inclui os scripts de validação client-side (jQuery Validation + Unobtrusive). -->
+}
