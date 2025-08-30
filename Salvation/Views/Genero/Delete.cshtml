@@ -1,0 +1,32 @@
+﻿@model Salvation.Models.Genero
+@* Define que a View recebe um objeto Genero com os dados da classificação selecionada *@
+
+@{
+    ViewData["Title"] = "Excluir Gênero";
+}
+
+<h2>Deseja realmente excluir este gênero?</h2>
+@* Mensagem de confirmação exibida ao usuário *@
+
+<dl class="row">
+    @* Lista de definição para exibir informações da classificação *@
+
+    <dt class="col-sm-2">ID</dt>
+    <dd class="col-sm-10">@Model.IdGenero</dd>
+
+    <dt class="col-sm-2">Descrição</dt>
+    <dd class="col-sm-10">@Model.DescricaoGenero</dd>
+</dl>
+
+<form asp-action="Delete">
+    @* Formulário que envia a requisição para a Action DeleteConfirmed *@
+
+    <input type="hidden" asp-for="IdGenero" />
+    @* Campo oculto com o Id da classificação que será excluída *@
+
+    <button type="submit" class="btn btn-danger">Excluir</button>
+    @* Botão que confirma e envia a exclusão *@
+
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    @* Link que volta para a lista sem excluir *@
+</form>

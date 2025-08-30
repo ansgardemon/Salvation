@@ -1,0 +1,28 @@
+﻿@model Salvation.ViewModels.GeneroViewModel
+@* A View recebe um GeneroViewModel, que contém os dados necessários para editar um genero *@
+
+@{
+    ViewData["Title"] = "Editar Gênero";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="IdGenero" />
+    @* Campo oculto para enviar o ID do gênero no POST *@
+
+    <div class="mb-3">
+        <label asp-for="DescricaoGenero" class="form-label"></label>
+        <input asp-for="DescricaoGenero" class="form-control" />
+        <span asp-validation-for="DescricaoGenero" class="text-danger"></span>
+        @* Campo de texto para editar a descrição do gênero *@
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- Inclui os scripts de validação client-side (jQuery Validation + Unobtrusive). -->
+}
