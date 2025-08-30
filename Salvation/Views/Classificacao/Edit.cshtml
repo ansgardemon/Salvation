@@ -1,0 +1,28 @@
+﻿@model Salvation.ViewModels.ClassificacaoViewModel
+@* A View recebe um ClassificacaoViewModel, que contém os dados necessários para editar uma classificação *@
+
+@{
+    ViewData["Title"] = "Editar Classificação";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="IdClassificacao" />
+    @* Campo oculto para enviar o ID da classificação no POST *@
+
+    <div class="mb-3">
+        <label asp-for="DescricaoClassificacao" class="form-label"></label>
+        <input asp-for="DescricaoClassificacao" class="form-control" />
+        <span asp-validation-for="DescricaoClassificacao" class="text-danger"></span>
+        @* Campo de texto para editar a descrição da classificação *@
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- Inclui os scripts de validação client-side (jQuery Validation + Unobtrusive). -->
+}

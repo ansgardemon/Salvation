@@ -17,25 +17,32 @@ namespace Salvation.Repositories
         {
             return await _context.Generos.ToListAsync();
         }
-        public Task AddAsync(Genero genero)
+        public async Task AddAsync(Genero genero)
         {
-            throw new NotImplementedException();
+            await _context.Generos.AddAsync(genero);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var genero = _context.Generos.FirstOrDefault(g => g.IdGenero == id);
+            if (genero != null)
+            {
+                _context.Generos.Remove(genero);
+                await _context.SaveChangesAsync();
+            }
         }
 
 
-        public Task<Genero> GetByIdAsyn(int id)
+        public async Task<Genero> GetByIdAsyn(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Generos.FirstOrDefaultAsync(g => g.IdGenero == id);
         }
 
-        public Task UpdateAsync(Genero genero)
+        public async Task UpdateAsync(Genero genero)
         {
-            throw new NotImplementedException();
+            _context.Generos.Update(genero);
+            await _context.SaveChangesAsync();
         }
     }
 }

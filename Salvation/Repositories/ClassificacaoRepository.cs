@@ -17,25 +17,32 @@ namespace Salvation.Repositories
         {
             return await _context.Classificacoes.ToListAsync();
         }
-        public Task AddAsync(Classificacao classificacao)
+        public async Task AddAsync(Classificacao classificacao)
         {
-            throw new NotImplementedException();
+            await _context.Classificacoes.AddAsync(classificacao);
+            await _context.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var classificacao = _context.Classificacoes.FirstOrDefault(c => c.IdClassificacao == id);
+            if (classificacao != null)
+            {
+                _context.Classificacoes.Remove(classificacao);
+                await _context.SaveChangesAsync();
+            }
         }
 
 
-        public Task<Classificacao> GetByIdAsyn(int id)
+        public async Task<Classificacao> GetByIdAsyn(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Classificacoes.FirstOrDefaultAsync(c => c.IdClassificacao == id);
         }
 
-        public Task UpdateAsync(Classificacao classificacao)
+        public async Task UpdateAsync(Classificacao classificacao)
         {
-            throw new NotImplementedException();
+            _context.Classificacoes.Update(classificacao);
+            await _context.SaveChangesAsync();
         }
     }
 }

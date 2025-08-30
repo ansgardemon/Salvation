@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Salvation.Models.Classificacao>
+@* Define que esta View receberá uma lista (IEnumerable) de objetos do tipo Classificacao *@
+
+@{
+    ViewData["Title"] = "Lista de Classificações";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+    @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+    {
+        // Exibe o botão "Nova Classificação" somente para Administrador e Gerente
+        <a asp-action="Create" class="btn btn-success">Nova Classificação</a>
+    }
+</p>
+
+
+
+<!-- Tabela de listagem -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+            {
+                <th>Ações</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.IdClassificacao</td>
+                <td>@item.DescricaoClassificacao</td>
+                @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                {
+                    <td>
+                        @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.IdClassificacao" class="btn btn-primary btn-sm">Editar</a>
+                        }
+
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.IdClassificacao" class="btn btn-danger btn-sm">Excluir</a>
+                        }
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,27 @@
+﻿@model Salvation.ViewModels.ClassificacaoViewModel
+@* Define que esta View vai receber um objeto do tipo ClassificacaoViewModel *@
+
+@{
+    ViewData["Title"] = "Cadastrar Classificação";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Create">
+    @* O formulário envia os dados para a Action "Create" do Controller *@
+
+    <div class="mb-3">
+        <label asp-for="DescricaoClassificacao" class="form-label"></label>
+        <input asp-for="DescricaoClassificacao" class="form-control" />
+        <span asp-validation-for="DescricaoClassificacao" class="text-danger"></span>
+        @* Campo de texto para a descrição da classificação com validação *@
+    </div>
+
+    <button type="submit" class="btn btn-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @* Inclui os scripts de validação (jQuery Validation + Unobtrusive) *@
+}

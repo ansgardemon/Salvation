@@ -46,12 +46,12 @@
                 <li><a class="nav-link text-light" asp-controller="Usuario" asp-action="Index">👥 Usuários</a></li>
 
                 @* Itens visíveis só para Admin/Gerente *@
-               @*  @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
+                @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
                 {
-                    <li><a class="nav-link text-light" asp-controller="Genero" asp-action="Index">📂 Gêneros</a></li>
+                  @*   <li><a class="nav-link text-light" asp-controller="Genero" asp-action="Index">📂 Gêneros</a></li> *@
                     <li><a class="nav-link text-light" asp-controller="Classificacao" asp-action="Index">🧷 Classificações</a></li>
-                    <li><a class="nav-link text-light" asp-controller="TipoUsuario" asp-action="Index">⚙️ Tipos de Usuário</a></li>
-                } *@
+               @*      <li><a class="nav-link text-light" asp-controller="TipoUsuario" asp-action="Index">⚙️ Tipos de Usuário</a></li> *@
+                }
 
                 @* Item só para Admin *@
                 @if (User.IsInRole("Administrador"))

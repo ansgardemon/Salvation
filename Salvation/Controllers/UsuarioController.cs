@@ -222,14 +222,6 @@ public class UsuarioController : Controller
             return RedirectToAction(nameof(Index));
         }
         viewModel = await CriarUsuarioViewModel(viewModel);
-        foreach (var state in ModelState)
-        {
-            foreach (var error in state.Value.Errors)
-            {
-                Console.WriteLine($"Erro em {state.Key}: {error.ErrorMessage}");
-            }
-        }
-
         return View(viewModel);
     }
 
