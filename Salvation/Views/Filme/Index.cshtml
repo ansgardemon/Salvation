@@ -22,7 +22,7 @@ de objetos do tipo Filme, ou seja, uma lista de filmes para exibir. *@
 <!-- Formulário para filtros de pesquisa -->
 <form asp-action="Index" method="get" class="row mb-3">
     <div class="col-md-4">
-        <select name="generoId" class="form-select">
+        <select name="generoId" class="form-select bg-dark text-light">
             <option value="">Todos os Gêneros</option>
             @foreach (var genero in ViewBag.Generos as SelectList)
             {
@@ -37,7 +37,7 @@ de objetos do tipo Filme, ou seja, uma lista de filmes para exibir. *@
     <div class="col-md-4">
         <!-- Campo para buscar filmes pelo título -->
         <input type="text" name="search" value="@ViewBag.TermoBusca"
-               class="form-control" placeholder="Buscar por título..." />
+               class="form-control bg-dark text-light" placeholder="Buscar por título..." />
     </div>
     <div class="col-md-2">
         <!-- Botão que envia o formulário de filtro -->

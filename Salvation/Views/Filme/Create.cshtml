@@ -17,7 +17,7 @@
 
     <div class="mb-3">
         <label asp-for="TituloFilme" class="form-label"></label>
-        <input asp-for="TituloFilme" class="form-control" />
+        <input asp-for="TituloFilme" class="form-control bg-dark text-light" />
         <span asp-validation-for="TituloFilme" class="text-danger"></span>
         @*         // "asp-for" conecta o input diretamente à propriedade do ViewModel.
         // O "span asp-validation-for" exibe mensagens de erro da validação. *@
@@ -25,19 +25,19 @@
 
     <div class="mb-3">
         <label asp-for="ProdutoraFilme" class="form-label"></label>
-        <input asp-for="ProdutoraFilme" class="form-control" />
+        <input asp-for="ProdutoraFilme" class="form-control bg-dark text-light" />
         <span asp-validation-for="ProdutoraFilme" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
         <label asp-for="ImagemUpload" class="form-label">Imagem</label>
-        <input asp-for="ImagemUpload" type="file" class="form-control" />
+        <input asp-for="ImagemUpload" type="file" class="form-control bg-dark text-light" />
         @*         // Campo de upload para o usuário selecionar a imagem do filme. *@
     </div>
 
     <div class="mb-3">
         <label asp-for="ClassificacaoId" class="form-label"></label>
-        <select asp-for="ClassificacaoId" asp-items="Model.Classificacoes" class="form-select">
+        <select asp-for="ClassificacaoId" asp-items="Model.Classificacoes" class="form-select bg-dark text-light">
             <option value="">Selecione</option>
         </select>
         <span asp-validation-for="ClassificacaoId" class="text-danger"></span>
@@ -47,17 +47,17 @@
 
     <div class="mb-3">
         <label asp-for="GeneroId" class="form-label"></label>
-        <select asp-for="GeneroId" asp-items="Model.Generos" class="form-select">
+        <select asp-for="GeneroId" asp-items="Model.Generos" class="form-select bg-dark text-light">
             <option value="">Selecione</option>
         </select>
         <span asp-validation-for="GeneroId" class="text-danger"></span>
         @*         // Dropdown de gêneros, mesmo funcionamento do anterior. *@
     </div>
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
+    <button type="submit" class="btn btn-outline-primary">Salvar</button>
     @*     // Botão que envia o formulário. *@
 
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
     @*     // Link que redireciona para a action "Index" (lista de filmes). *@
 </form>
 

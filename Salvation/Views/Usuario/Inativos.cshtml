@@ -8,7 +8,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<table class="table table-striped">
+<table class="table table-dark table-striped">
     <thead>
         <tr>
             <th>Nome</th>
@@ -30,7 +30,7 @@
                 <td>
                     <!-- Botão para reativar usuário -->
                     <a asp-action="AtivarUsuario" asp-route-id="@usuario.IdUsuario"
-                       class="btn btn-sm btn-success">Ativar</a>
+                       class="btn btn-sm btn-outline-success">Ativar</a>
                     <!--
                        Tag Helper asp-action="Ativar": chama a Action "Ativar" no UsuarioController
                        asp-route-id: envia o Id do usuário na rota
@@ -42,4 +42,4 @@
 </table>
 
 <!-- Botão para voltar à listagem principal -->
-<a asp-action="Index" class="btn btn-secondary">Voltar</a>
+<a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
