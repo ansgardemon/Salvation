@@ -15,7 +15,7 @@ de objetos do tipo Filme, ou seja, uma lista de filmes para exibir. *@
     {
         // Exibe o botão "Novo Filme" somente para usuários que têm o papel
         // "Administrador" ou "Gerente".
-        <a asp-action="Create" class="btn btn-success">Novo Filme</a>
+        <a asp-action="Create" class="btn btn-outline-success">Novo Filme</a>
     }
 </p>
 
@@ -41,16 +41,16 @@ de objetos do tipo Filme, ou seja, uma lista de filmes para exibir. *@
     </div>
     <div class="col-md-2">
         <!-- Botão que envia o formulário de filtro -->
-        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
     </div>
     <div class="col-md-2">
         <!-- Botão que reseta os filtros e recarrega a lista completa -->
-        <a asp-action="Index" class="btn btn-secondary w-100">Limpar</a>
+        <a asp-action="Index" class="btn btn-outline-secondary w-100">Limpar</a>
     </div>
 </form>
 
 <!-- Tabela para exibição dos filmes -->
-<table class="table table-striped">
+<table class="table table-dark table-striped">
     <thead>
         <tr>
             <th>Título</th>
@@ -84,13 +84,13 @@ de objetos do tipo Filme, ou seja, uma lista de filmes para exibir. *@
                     @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
                     {
                         // Botão Editar aparece para Admin e Gerente.
-                        <a asp-action="Edit" asp-route-id="@item.IdFilme" class="btn btn-primary btn-sm">Editar</a>
+                        <a asp-action="Edit" asp-route-id="@item.IdFilme" class="btn btn-outline-primary btn-sm">Editar</a>
                     }
 
                     @if (User.IsInRole("Administrador"))
                     {
                         // Botão Excluir aparece somente para Admin.
-                        <a asp-action="Delete" asp-route-id="@item.IdFilme" class="btn btn-danger btn-sm">Excluir</a>
+                        <a asp-action="Delete" asp-route-id="@item.IdFilme" class="btn btn-outline-danger btn-sm">Excluir</a>
                     }
                 </td>
             </tr>
