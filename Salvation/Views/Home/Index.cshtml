@@ -1,8 +1,73 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Salvation.Models.Filme>
+
+@{
+    ViewData["Title"] = "Salvation - Cinema de Terror";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    <!-- Hero Section -->
+    <section class="p-5 mb-5 bg-black text-light rounded-3 shadow-lg"
+             style="background: linear-gradient(to bottom, #000000, #1a1a1a);">
+        <h1 class="display-2 fw-bold text-danger" style="text-shadow: 0 0 25px red;">Salvation</h1>
+        <p class="lead fst-italic mb-4">Horror Cinema</p>
+
+        <div class="d-flex justify-content-center gap-3">
+            <a asp-controller="Filme" asp-action="Index" class="btn btn-danger btn-lg shadow">Ver Programação</a>
+
+            @if (!(User.Identity?.IsAuthenticated ?? false))
+            {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light btn-lg shadow">🔒 Área Restrita</a>
+            }
+        </div>
+    </section>
+
+    <!-- Carousel Dinâmico -->
+    @if (Model.Any())
+    {
+        <div id="filmeCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @for (int i = 0; i < Model.Count(); i++)
+                {
+                    var filme = Model.ElementAt(i);
+                    <div class="carousel-item @(i == 0 ? "active" : "")">
+                        <img src="@filme.UrlImagem" class="d-block w-100"
+                             style="max-height:500px; object-fit:cover;" alt="@filme.Titulo" />
+                        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-2">
+                            <h5>@filme.Titulo</h5>
+                            <p>@filme.Produtora</p>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#filmeCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Anterior</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#filmeCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Próximo</span>
+            </button>
+        </div>
+    }
+
+    <!-- Seção "Em Cartaz" -->
+    <section class="mt-5">
+        <h2 class="mb-4 text-danger">Em Cartaz</h2>
+        <div class="row g-4">
+            @foreach (var filme in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card bg-dark text-light border-danger shadow">
+                        <img src="@filme.UrlImagem" class="card-img-top" alt="@filme.Titulo" style="height:300px; object-fit:cover;" />
+                        <div class="card-body">
+                            <h5 class="card-title">@filme.Titulo</h5>
+                            <p class="card-text small">@filme.Produtora</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
 </div>

@@ -14,7 +14,6 @@ namespace Salvation.ViewModels
         public string ProdutoraFilme { get; set; }
         public string? UrlImagem { get; set; }
 
-        [DisplayName("Capa")]
         public IFormFile? ImagemUpload { get; set; }
 
         [DisplayName("Classificação Etária")]

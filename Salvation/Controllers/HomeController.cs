@@ -1,21 +1,28 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Salvation.Models;
+using Salvation.Interfaces;
 
 namespace Salvation.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IFilmeRepository _filmeRepository;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger,
+                              IFilmeRepository filmeRepository)
         {
             _logger = logger;
+            _filmeRepository = filmeRepository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            // Busca todos os filmes do banco
+            var filmes = await _filmeRepository.GetAllAsync();
+            filmes = filmes.OrderByDescending(f => f.IdFilme).ToList(); // Últimos lançamentos primeiro
+            return View(filmes);
         }
 
         public IActionResult Privacy()
