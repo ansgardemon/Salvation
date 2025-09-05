@@ -65,7 +65,7 @@ namespace Salvation.Controllers
 
 
         //INDEX
-        [Authorize(Roles = "Administrador, Gerente, Outros")]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int? generoId, string? search)
         {
             var filmes = await _filmeRepository.GetAllAsync();
@@ -228,24 +228,22 @@ namespace Salvation.Controllers
                 filme.GeneroId = viewModel.GeneroId;
                 //verifica se tem uma nova imagem
 
-
                 if (viewModel.ImagemUpload != null)
                 {
                     var nomeArquivo = Guid.NewGuid().ToString() + Path.GetExtension(viewModel.ImagemUpload.FileName);
+                    var caminho = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/img", nomeArquivo);
 
-
-                    var caminho = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", nomeArquivo);
-
-
-                    //Criar a pasta se não existir
                     using var stream = new FileStream(caminho, FileMode.Create);
                     await viewModel.ImagemUpload.CopyToAsync(stream);
 
-
                     filme.UrlImagem = "/img/" + nomeArquivo;
-
-
                 }
+                else if (string.IsNullOrEmpty(filme.UrlImagem))
+                {
+                    // fallback para imagem padrão se não tiver nenhuma
+                    filme.UrlImagem = "/img/sem-imagem.png";
+                }
+
 
                 await _filmeRepository.UpdateAsync(filme);
                 return RedirectToAction(nameof(Index));

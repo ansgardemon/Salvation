@@ -12,13 +12,13 @@
 
     <div class="mb-3">
         <label asp-for="DescricaoGenero" class="form-label"></label>
-        <input asp-for="DescricaoGenero" class="form-control" />
+        <input asp-for="DescricaoGenero" class="form-control bg-dark text-light" />
         <span asp-validation-for="DescricaoGenero" class="text-danger"></span>
         @* Campo de texto para a descrição da classificação com validação *@
     </div>
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
 </form>
 
 @section Scripts {

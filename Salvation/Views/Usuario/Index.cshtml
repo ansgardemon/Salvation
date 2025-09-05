@@ -13,7 +13,7 @@
     @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
     {
         // Mostra o botão "Novo Usuário" apenas para Administradores e Gerentes.
-        <a asp-action="Create" class="btn btn-success">Novo Usuário</a>
+        <a asp-action="Create" class="btn btn-outline-success">Novo Usuário</a>
     }
 </p>
 
@@ -21,7 +21,7 @@
 <form asp-action="Index" method="get" class="row mb-3">
     <div class="col-md-4">
         <!-- Dropdown de Tipos de Usuário -->
-        <select name="tipoUsuarioId" class="form-select">
+        <select name="tipoUsuarioId" class="form-select bg-dark text-light">
             <option value="">Todos os Tipos</option>
             @foreach (var tipo in ViewBag.TiposUsuario as SelectList)
             {
@@ -36,20 +36,20 @@
     <div class="col-md-4">
         <!-- Campo de busca por nome -->
         <input type="text" name="search" value="@ViewBag.TermoBusca"
-               class="form-control" placeholder="Buscar por nome..." />
+               class="form-control bg-dark text-light" placeholder="Buscar por nome..." />
     </div>
     <div class="col-md-2">
         <!-- Botão para aplicar filtros -->
-        <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
     </div>
     <div class="col-md-2">
         <!-- Botão para limpar filtros e voltar ao Index -->
-        <a asp-action="Index" class="btn btn-secondary w-100">Limpar</a>
+        <a asp-action="Index" class="btn btn-outline-secondary w-100">Limpar</a>
     </div>
 </form>
 
 <!-- Tabela de listagem -->
-<table class="table table-striped">
+<table class="table table-dark table-striped">
     <thead>
         <tr>
             <th>Nome</th>
@@ -77,13 +77,13 @@
                     {
                         // Botão de editar disponível para Admin/Gerente
                         <a asp-action="Edit" asp-route-id="@usuario.IdUsuario"
-                           class="btn btn-sm btn-primary">Editar</a>
+                           class="btn btn-sm btn-outline-primary">Editar</a>
                     }
                     @if (User.IsInRole("Administrador"))
                     {
                         // Botão de excluir disponível apenas para Admin
                         <a asp-action="Delete" asp-route-id="@usuario.IdUsuario"
-                           class="btn btn-sm btn-danger">Excluir</a>
+                           class="btn btn-sm btn-outline-danger">Excluir</a>
                     }
                 </td>
             </tr>

@@ -7,7 +7,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="Edit">
+<form asp-action="Edit" enctype="multipart/form-data">
     <input type="hidden" asp-for="IdFilme" />
     <!-- Formulário que será enviado para a Action Create (POST) no UsuarioController. -->
 
@@ -50,8 +50,8 @@
         @*         // Dropdown de gêneros, mesmo funcionamento do anterior. *@
     </div>
 
-    <button type="submit" class="btn btn-primary">Salvar</button>
-    <a asp-action="Index" class="btn btn-secondary">Voltar</a>
+    <button type="submit" class="btn btn-outline-primary">Salvar</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Voltar</a>
 </form>
 
 @section Scripts {

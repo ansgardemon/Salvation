@@ -11,14 +11,14 @@
     @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
     {
         // Exibe o botão "Novo Gênero" somente para Administrador e Gerente
-        <a asp-action="Create" class="btn btn-success">Novo Gênero</a>
+        <a asp-action="Create" class="btn btn-outline-success">Novo Gênero</a>
     }
 </p>
 
 
 
 <!-- Tabela de listagem -->
-<table class="table table-striped">
+<table class="table table-dark table-striped">
     <thead>
         <tr>
             <th>ID</th>
@@ -40,12 +40,12 @@
                     <td>
                         @if (User.IsInRole("Administrador") || User.IsInRole("Gerente"))
                         {
-                            <a asp-action="Edit" asp-route-id="@item.IdGenero" class="btn btn-primary btn-sm">Editar</a>
+                            <a asp-action="Edit" asp-route-id="@item.IdGenero" class="btn btn-outline-primary btn-sm">Editar</a>
                         }
 
                         @if (User.IsInRole("Administrador"))
                         {
-                            <a asp-action="Delete" asp-route-id="@item.IdGenero" class="btn btn-danger btn-sm">Excluir</a>
+                            <a asp-action="Delete" asp-route-id="@item.IdGenero" class="btn btn-outline-danger btn-sm">Excluir</a>
                         }
                     </td>
                 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using System.ComponentModel;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Salvation.ViewModels
 {
@@ -8,7 +9,11 @@ namespace Salvation.ViewModels
         public string Nome { get; set; }
         public string Email { get; set; }
         public string Senha { get; set; }
+
+        [DisplayName("Data de Nascimento")]
         public DateTime DataNascimento { get; set; }
+
+        [DisplayName("Tipo de usuário")]
         public int TipoUsuarioId { get; set; }
 
         //COLEÇÃO PARA POPULAR O DROPDOWN LIST
