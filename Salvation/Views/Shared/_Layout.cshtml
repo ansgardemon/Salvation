@@ -28,15 +28,27 @@
     <!-- Navbar no topo -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom shadow-sm">
         <div class="container-fluid">
-            <!-- Avatar + nome -->
+
             <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
-                <img src="~/img/@avatar" width="40" height="40"
+                <img src="~/img/logo.png" width="80" height="80" 
+                class="me-2" alt="Logo do site" />
+            </a>
+
+
+			@if (User.IsInRole("Administrador") || User.IsInRole("Gerente") || User.IsInRole("Outros"))
+            {
+
+                <!-- Avatar + nome -->
+                <a class="navbar-brand d-flex align-items-center">
+                    <img src="~/img/@avatar" width="40" height="40"
                      class="rounded-circle me-2 border border-light" alt="Avatar" />
                 <span>
                     <strong>@User.Identity?.Name</strong><br />
                     <small class="text-secondary">@role</small>
                 </span>
             </a>
+
+            }
 
             <!-- Botão de menu mobile -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbar"
@@ -63,9 +75,17 @@
                         <li class="nav-item"><a class="nav-link" asp-controller="Usuario" asp-action="Inativos">🧟‍♂️ Inativos</a></li>
                     }
 
+
+
+                    
+			@if (User.IsInRole("Administrador") || User.IsInRole("Gerente") || User.IsInRole("Outros"))
+            {
                     <li class="nav-item">
                         <a class="nav-link text-danger" asp-controller="Usuario" asp-action="Logout">🚪 Sair</a>
                     </li>
+            }
+
+
                 </ul>
             </div>
         </div>
