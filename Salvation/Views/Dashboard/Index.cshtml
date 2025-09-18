@@ -1,0 +1,312 @@
+﻿@model Salvation.ViewModels.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<style>
+    .chart-card .card-body {
+        background: #121212;
+        color: #fff;
+        min-height: 320px;
+    }
+
+    .chart-card canvas {
+        width: 100% !important;
+        height: 260px !important;
+    }
+</style>
+
+<div class="container-fluid py-3">
+    <h2 class="mb-4">📊 Dashboard</h2>
+
+
+    <!-- Cards de KPIs movidos para baixo -->
+    <div class="row g-3 mt-3">
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body bg-dark text-light">
+                    <div class="fs-1 fw-bold">@Model.TotalFilmes</div>
+                    <div class="text-light">Filmes</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body bg-dark text-light">
+                    <div class="fs-1 fw-bold">@Model.TotalGeneros</div>
+                    <div class="text-light">Gêneros</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body bg-dark text-light">
+                    <div class="fs-1 fw-bold">@Model.TotalClassificacoes</div>
+                    <div class="text-light">Classificações</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body bg-dark text-light">
+                    <div class="fs-1 fw-bold">@Model.TotalUsuarios</div>
+                    <div class="text-light">Usuários</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listas e Gráficos -->
+    <div class="row g-3 mt-1">
+        <!-- Tabela: Filmes por Gênero -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm h-100 chart-card">
+                <div class="card-header fw-semibold bg-dark text-light">🎬 Filmes por Gênero</div>
+                <div class="card-body bg-dark text-light">
+                    @if (Model.UltimosFilmes?.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle table-dark">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Gênero</th>
+                                        <th>Quantidade Filme</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var f in Model.GenerosMaisPopulares)
+                                    {
+                                        <tr>
+                                            <td>@f.IdGenero</td>
+                                            <td>@f.DescricaoGenero</td>
+                                            <td>@f.QtdeFilmes</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted m-0">Sem filmes cadastrados ainda.</p>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela: Top 5 Filmes -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-sm h-100 chart-card">
+                <div class="card-header fw-semibold bg-dark text-light">🏆 Top 5 Filmes</div>
+                <div class="card-body bg-dark text-light">
+                    @if (Model.UltimosFilmes?.Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-sm align-middle table-dark">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Título</th>
+                                        <th>Gênero</th>
+                                        <th>Classificação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var f in Model.UltimosFilmes.Take(5))
+                                    {
+                                        <tr>
+                                            <td>@f.IdFilme</td>
+                                            <td>@f.Titulo</td>
+                                            <td>@f.Genero</td>
+                                            <td>@f.Classificacao</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted m-0">Sem filmes cadastrados.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos: Filmes por Gênero, Classificação, Top 5 Gêneros e Cobertura de Imagens -->
+    <div class="row g-3 mt-1">
+        <!-- Gráfico 1: Filmes por Gênero (Pizza) -->
+        <div class="col-12 col-lg-3">
+            <div class="card shadow-sm h-100 chart-card">
+                <div class="card-header fw-semibold bg-dark text-light">📊 Filmes por Gênero</div>
+                <div class="card-body bg-dark text-light">
+                    <canvas id="chartGeneroPizza"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico 2: Filmes por Classificação (Barras) -->
+        <div class="col-12 col-lg-3">
+            <div class="card shadow-sm h-100 chart-card">
+                <div class="card-header fw-semibold bg-dark text-light">📚 Filmes por Classificação</div>
+                <div class="card-body bg-dark text-light">
+                    <canvas id="chartClassificacaoBar"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico 3: Top 5 Gêneros por Qtde de Filmes (Barras Horizontais) -->
+        <div class="col-12 col-lg-3">
+            <div class="card shadow-sm h-100 chart-card">
+                <div class="card-header fw-semibold bg-dark text-light">🏆 Top 5 Gêneros por Qtde de Filmes</div>
+                <div class="card-body bg-dark text-light">
+                    <canvas id="chartTopGeneros"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico 4: Cobertura de Imagens (Rosca) -->
+        <div class="col-12 col-lg-3">
+            <div class="card shadow-sm h-100 chart-card">
+                <div class="card-header fw-semibold bg-dark text-light">🖼️ Cobertura de Imagens (Com x Sem)</div>
+                <div class="card-body bg-dark text-light">
+                    <canvas id="chartCoberturaImagem"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        if (typeof Chart !== 'undefined') {
+            Chart.defaults.color = '#fff';
+        }
+
+        // Plugin: texto central no donut
+        const centerText = {
+            id: 'centerText',
+            afterDatasetsDraw(chart, args, pluginOptions) {
+                const ds = chart.getDatasetMeta(0).data;
+                if (!ds || !ds[0]) return;
+                const { x, y } = ds[0];
+                const total = chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                if (!total) return;
+                const pct = Math.round((chart.data.datasets[0].data[0] / total) * 100);
+                const ctx = chart.ctx;
+                ctx.save();
+                ctx.font = '600 18px system-ui, -apple-system, Segoe UI, Roboto';
+                ctx.fillStyle = '#fff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${pct}%`, x, y);
+                ctx.restore();
+            }
+        };
+
+        // 1) Filmes por Gênero (Pizza)
+        const generoLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.FilmesPorGenero.Select(x => x.DescricaoGenero)));
+        const generoData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.FilmesPorGenero.Select(x => x.QtdeFilmes)));
+
+        new Chart(document.getElementById('chartGeneroPizza'), {
+            type: 'pie',
+            data: {
+                labels: generoLabels,
+                datasets: [{
+                    data: generoData,
+                    backgroundColor: ["#22c55e", "#ef4444", "#3b82f6", "#9333ea", "#fbbf24"]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+
+        // 2) Filmes por Classificação (Barras)
+        const classLabelsBar = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.FilmesPorClassificacao.Select(x => x.DescricaoClassificacao)));
+        const classDataBar = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.FilmesPorClassificacao.Select(x => x.QtdeFilmes)));
+
+        new Chart(document.getElementById('chartClassificacaoBar'), {
+            type: 'bar',
+            data: {
+                labels: classLabelsBar,
+                datasets: [{
+                    label: 'Qtd Filmes',
+                    data: classDataBar,
+                    backgroundColor: "rgba(59, 130, 246, 0.8)",
+                    borderColor: "rgba(59, 130, 246, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y', // ← barras horizontais
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, ticks: { stepSize: 1 } },
+                    y: { ticks: { autoSkip: false } }
+                },
+                layout: { padding: { bottom: 0, top: 0 } }
+            }
+        });
+
+        // 3) Top 5 Gêneros por Qtde de Filmes (Barras Horizontais)
+        const topGenerosLabels = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GenerosMaisPopulares.Select(x => x.DescricaoGenero)));
+        const topGenerosData = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.GenerosMaisPopulares.Select(x => x.QtdeFilmes)));
+
+        new Chart(document.getElementById('chartTopGeneros'), {
+            type: 'bar',
+            data: {
+                labels: topGenerosLabels,
+                datasets: [{
+                    label: 'Qtd Filmes',
+                    data: topGenerosData,
+                    backgroundColor: "rgba(34, 211, 238, 0.85)",
+                    borderColor: "rgba(34, 211, 238, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                indexAxis: 'y', // ← barras horizontais
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { beginAtZero: true, ticks: { stepSize: 1 } },
+                    y: { ticks: { autoSkip: false } }
+                },
+                layout: { padding: { bottom: 0, top: 0 } }
+            }
+        });
+
+        // 4) Cobertura de Imagens (Rosca)
+        const imgLabels = ["Com imagem", "Sem imagem"];
+        const imgData = [@Model.FilmesComImagem, @Model.FilmesSemImagem];
+
+        new Chart(document.getElementById('chartCoberturaImagem'), {
+            type: 'doughnut',
+            data: {
+                labels: imgLabels,
+                datasets: [{
+                    data: imgData,
+                    backgroundColor: ["#22c55e", "#ef4444"],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'bottom' } },
+                cutout: '60%'
+            },
+            plugins: [centerText]
+        });
+    </script>
+}
